@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ConsultorioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CONSULTA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_PACIENTE" Type="int" />
+          <Property Name="ID_MEDICO" Type="int" />
+          <Property Name="ID_HOSPITAL" Type="int" />
+          <Property Name="DATA" Type="datetime" />
+          <Property Name="DIAGNOSTICO" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="HOSPITAL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="30" />
+          <Property Name="BAIRRO" Type="varchar" MaxLength="30" />
+          <Property Name="CIDADE" Type="varchar" MaxLength="30" />
+          <Property Name="ESTADO" Type="char" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="INTERNACAO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ENTRADA" Type="datetime" />
+          <Property Name="QUARTO" Type="int" />
+          <Property Name="SAIDA" Type="datetime" />
+          <Property Name="OBSERVACOES" Type="varchar" MaxLength="50" />
+          <Property Name="ID_CONSULTA" Type="int" />
+        </EntityType>
+        <EntityType Name="MEDICO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="30" />
+          <Property Name="SEXO" Type="char" MaxLength="1" />
+          <Property Name="ESPECIALIDADE" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="PACIENTE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOME" Type="varchar" MaxLength="30" />
+          <Property Name="SEXO" Type="char" MaxLength="1" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="30" />
+          <Property Name="NASCIMENTO" Type="date" />
+        </EntityType>
+        <Association Name="FK_CONSULTA_HOSPITAL">
+          <End Role="HOSPITAL" Type="Self.HOSPITAL" Multiplicity="0..1" />
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOSPITAL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSULTA">
+              <PropertyRef Name="ID_HOSPITAL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONSULTA_MEDICO">
+          <End Role="MEDICO" Type="Self.MEDICO" Multiplicity="0..1" />
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEDICO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSULTA">
+              <PropertyRef Name="ID_MEDICO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONSULTA_PACIENTE">
+          <End Role="PACIENTE" Type="Self.PACIENTE" Multiplicity="0..1" />
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PACIENTE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSULTA">
+              <PropertyRef Name="ID_PACIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_INTERNACAO_CONSULTA">
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="0..1" />
+          <End Role="INTERNACAO" Type="Self.INTERNACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONSULTA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="INTERNACAO">
+              <PropertyRef Name="ID_CONSULTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConsultorioModelStoreContainer">
+          <EntitySet Name="CONSULTA" EntityType="Self.CONSULTA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HOSPITAL" EntityType="Self.HOSPITAL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="INTERNACAO" EntityType="Self.INTERNACAO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MEDICO" EntityType="Self.MEDICO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PACIENTE" EntityType="Self.PACIENTE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CONSULTA_HOSPITAL" Association="Self.FK_CONSULTA_HOSPITAL">
+            <End Role="HOSPITAL" EntitySet="HOSPITAL" />
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONSULTA_MEDICO" Association="Self.FK_CONSULTA_MEDICO">
+            <End Role="MEDICO" EntitySet="MEDICO" />
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONSULTA_PACIENTE" Association="Self.FK_CONSULTA_PACIENTE">
+            <End Role="PACIENTE" EntitySet="PACIENTE" />
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INTERNACAO_CONSULTA" Association="Self.FK_INTERNACAO_CONSULTA">
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+            <End Role="INTERNACAO" EntitySet="INTERNACAO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConsultorioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CONSULTA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_PACIENTE" Type="Int32" />
+          <Property Name="ID_MEDICO" Type="Int32" />
+          <Property Name="ID_HOSPITAL" Type="Int32" />
+          <Property Name="DATA" Type="DateTime" Precision="3" />
+          <Property Name="DIAGNOSTICO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="HOSPITAL" Relationship="Self.FK_CONSULTA_HOSPITAL" FromRole="CONSULTA" ToRole="HOSPITAL" />
+          <NavigationProperty Name="MEDICO" Relationship="Self.FK_CONSULTA_MEDICO" FromRole="CONSULTA" ToRole="MEDICO" />
+          <NavigationProperty Name="PACIENTE" Relationship="Self.FK_CONSULTA_PACIENTE" FromRole="CONSULTA" ToRole="PACIENTE" />
+          <NavigationProperty Name="INTERNACAO" Relationship="ConsultorioModel.FK_INTERNACAO_CONSULTA" FromRole="CONSULTA" ToRole="INTERNACAO" />
+        </EntityType>
+        <EntityType Name="HOSPITAL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="BAIRRO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CIDADE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CONSULTA" Relationship="Self.FK_CONSULTA_HOSPITAL" FromRole="HOSPITAL" ToRole="CONSULTA" />
+        </EntityType>
+        <EntityType Name="INTERNACAO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ENTRADA" Type="DateTime" Precision="3" />
+          <Property Name="QUARTO" Type="Int32" />
+          <Property Name="SAIDA" Type="DateTime" Precision="3" />
+          <Property Name="OBSERVACOES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_CONSULTA" Type="Int32" />
+          <NavigationProperty Name="CONSULTA" Relationship="ConsultorioModel.FK_INTERNACAO_CONSULTA" FromRole="INTERNACAO" ToRole="CONSULTA" />
+        </EntityType>
+        <EntityType Name="MEDICO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SEXO" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ESPECIALIDADE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CONSULTA" Relationship="Self.FK_CONSULTA_MEDICO" FromRole="MEDICO" ToRole="CONSULTA" />
+        </EntityType>
+        <EntityType Name="PACIENTE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="SEXO" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="NASCIMENTO" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CONSULTA" Relationship="Self.FK_CONSULTA_PACIENTE" FromRole="PACIENTE" ToRole="CONSULTA" />
+        </EntityType>
+        <Association Name="FK_CONSULTA_HOSPITAL">
+          <End Role="HOSPITAL" Type="Self.HOSPITAL" Multiplicity="0..1" />
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HOSPITAL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSULTA">
+              <PropertyRef Name="ID_HOSPITAL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONSULTA_MEDICO">
+          <End Role="MEDICO" Type="Self.MEDICO" Multiplicity="0..1" />
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEDICO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSULTA">
+              <PropertyRef Name="ID_MEDICO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONSULTA_PACIENTE">
+          <End Role="PACIENTE" Type="Self.PACIENTE" Multiplicity="0..1" />
+          <End Role="CONSULTA" Type="Self.CONSULTA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PACIENTE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSULTA">
+              <PropertyRef Name="ID_PACIENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConsultorioEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CONSULTA" EntityType="Self.CONSULTA" />
+          <EntitySet Name="HOSPITAL" EntityType="Self.HOSPITAL" />
+          <EntitySet Name="INTERNACAO" EntityType="Self.INTERNACAO" />
+          <EntitySet Name="MEDICO" EntityType="Self.MEDICO" />
+          <EntitySet Name="PACIENTE" EntityType="Self.PACIENTE" />
+          <AssociationSet Name="FK_CONSULTA_HOSPITAL" Association="Self.FK_CONSULTA_HOSPITAL">
+            <End Role="HOSPITAL" EntitySet="HOSPITAL" />
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONSULTA_MEDICO" Association="Self.FK_CONSULTA_MEDICO">
+            <End Role="MEDICO" EntitySet="MEDICO" />
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONSULTA_PACIENTE" Association="Self.FK_CONSULTA_PACIENTE">
+            <End Role="PACIENTE" EntitySet="PACIENTE" />
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_INTERNACAO_CONSULTA" Association="ConsultorioModel.FK_INTERNACAO_CONSULTA">
+            <End Role="CONSULTA" EntitySet="CONSULTA" />
+            <End Role="INTERNACAO" EntitySet="INTERNACAO" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_INTERNACAO_CONSULTA">
+          <End Type="ConsultorioModel.CONSULTA" Role="CONSULTA" Multiplicity="0..1" />
+          <End Type="ConsultorioModel.INTERNACAO" Role="INTERNACAO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONSULTA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="INTERNACAO">
+              <PropertyRef Name="ID_CONSULTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConsultorioModelStoreContainer" CdmEntityContainer="ConsultorioEntities">
+          <EntitySetMapping Name="CONSULTA">
+            <EntityTypeMapping TypeName="ConsultorioModel.CONSULTA">
+              <MappingFragment StoreEntitySet="CONSULTA">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_PACIENTE" ColumnName="ID_PACIENTE" />
+                <ScalarProperty Name="ID_MEDICO" ColumnName="ID_MEDICO" />
+                <ScalarProperty Name="ID_HOSPITAL" ColumnName="ID_HOSPITAL" />
+                <ScalarProperty Name="DATA" ColumnName="DATA" />
+                <ScalarProperty Name="DIAGNOSTICO" ColumnName="DIAGNOSTICO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HOSPITAL">
+            <EntityTypeMapping TypeName="ConsultorioModel.HOSPITAL">
+              <MappingFragment StoreEntitySet="HOSPITAL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="BAIRRO" ColumnName="BAIRRO" />
+                <ScalarProperty Name="CIDADE" ColumnName="CIDADE" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INTERNACAO">
+            <EntityTypeMapping TypeName="ConsultorioModel.INTERNACAO">
+              <MappingFragment StoreEntitySet="INTERNACAO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ENTRADA" ColumnName="ENTRADA" />
+                <ScalarProperty Name="QUARTO" ColumnName="QUARTO" />
+                <ScalarProperty Name="SAIDA" ColumnName="SAIDA" />
+                <ScalarProperty Name="OBSERVACOES" ColumnName="OBSERVACOES" />
+                <ScalarProperty Name="ID_CONSULTA" ColumnName="ID_CONSULTA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEDICO">
+            <EntityTypeMapping TypeName="ConsultorioModel.MEDICO">
+              <MappingFragment StoreEntitySet="MEDICO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="SEXO" ColumnName="SEXO" />
+                <ScalarProperty Name="ESPECIALIDADE" ColumnName="ESPECIALIDADE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PACIENTE">
+            <EntityTypeMapping TypeName="ConsultorioModel.PACIENTE">
+              <MappingFragment StoreEntitySet="PACIENTE">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="SEXO" ColumnName="SEXO" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="NASCIMENTO" ColumnName="NASCIMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
